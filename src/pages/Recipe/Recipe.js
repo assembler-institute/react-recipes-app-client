@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -53,9 +53,17 @@ function Comments({ comments = [] }) {
 }
 
 function Recipe() {
-  const recipeID = useParams();
+  const { recipeID } = useParams();
+  const dispatch = useDispatch();
+  const [comment, setComment] = useState("");
+  const [showForm, setShowForm] = useState(false);
 
-  const { isAuthenticated } = useSelector(currentUserStateSelector);
+  const recipesState = useSelector(recipesStateSelector);
+  const currentUserState = useSelector(currentUserStateSelector);
+
+  const recipeSelector = useMemo(makeRecipeSelector, []);
+  const recipe = useSelector((state) => recipeSelector(state, recipeID));
+
   const {
     _id,
     name,
@@ -68,17 +76,7 @@ function Recipe() {
     author: { name: authorName, lastname: authorLastname } = {},
     ingredients,
     comments,
-  } = useSelector((state) => {
-    const recipeSelector = makeRecipeSelector();
-
-    /* eslint-disable-next-line */
-    debugger;
-
-    const data = recipeSelector(state, recipeID);
-    console.log(data);
-
-    return data;
-  });
+  } = recipe;
 
   const {
     recipeLoading,
@@ -86,12 +84,9 @@ function Recipe() {
     recipeFetched,
     recipeUpdating,
     recipeUpdatingError,
-  } = useSelector(recipesStateSelector);
+  } = recipesState;
 
-  const dispatch = useDispatch();
-
-  const [comment, setComment] = useState("");
-  const [showForm, setShowForm] = useState(false);
+  const { isAuthenticated } = currentUserState;
 
   useEffect(() => {
     if (_id) {
@@ -207,7 +202,7 @@ function Recipe() {
                       <Button
                         additionalClasses="mt-2 mt-sm-0 ml-sm-auto"
                         onClick={() => setShowForm(true)}
-                        data-testid={prefix("new-comment")}
+                        selector-testid={prefix("new-comment")}
                       >
                         Nuevo Comentario
                       </Button>
@@ -222,7 +217,7 @@ function Recipe() {
                         <TextArea
                           placeholder="Comentario"
                           rows="4"
-                          data-testid={prefix("textarea")}
+                          selector-testid={prefix("textarea")}
                           value={comment}
                           onChange={(e) => setComment(e.target.value)}
                         />
@@ -230,7 +225,7 @@ function Recipe() {
                           htmlType="submit"
                           additionalClasses="mt-3"
                           disabled={recipeUpdating}
-                          data-testid={prefix("send-comment")}
+                          selector-testid={prefix("send-comment")}
                         >
                           Enviar
                         </Button>

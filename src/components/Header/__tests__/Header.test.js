@@ -13,7 +13,7 @@ describe("<Header />", () => {
         currentUserState={{
           isAuthenticated: false,
         }}
-        signout={signOutCb}
+        signOut={signOutCb}
       />,
     );
 
@@ -42,7 +42,7 @@ describe("<Header />", () => {
         currentUserState={{
           isAuthenticated: true,
         }}
-        signout={signOutCb}
+        signOut={signOutCb}
       />,
     );
 
@@ -58,13 +58,13 @@ describe("<Header />", () => {
     expect(queryByTestId("header-register")).not.toBeInTheDocument();
   });
 
-  it("calls the `signout` cb when authenticated", () => {
+  it("calls the `signOut` cb when authenticated", () => {
     const { getByTestId } = renderWithReduxAndRouter(
       <Header
         currentUserState={{
           isAuthenticated: true,
         }}
-        signout={signOutCb}
+        signOut={signOutCb}
       />,
     );
 

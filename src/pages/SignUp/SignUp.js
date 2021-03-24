@@ -1,31 +1,33 @@
 import React, { useState } from "react";
-import { shape, bool, string, func, oneOfType, object } from "prop-types";
 import { Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import "./SignUp.scss";
-import HeaderContainer from "../../redux/containers/components/HeaderContainer";
+import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import Label from "../../components/Label";
 import ROUTES from "../../utils/routes";
 import makePrefix from "../../utils/make-prefix";
+import { currentUserStateSelector } from "../../redux/user/user-selectors";
+import { signUp } from "../../redux/user/user-actions";
 
-function SignUp({
-  currentUserState: { isAuthenticated, signUpError, isSigningUp } = {},
-  signup,
-}) {
+function SignUp() {
   const [name, setName] = useState("");
   const [lastname, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const prefix = makePrefix("signup-form");
+  const prefix = makePrefix("signUp-form");
+
+  const currentUserState = useSelector(currentUserStateSelector);
+  const { isAuthenticated, signUpError, isSigningUp } = currentUserState;
 
   function handleSubmit(e) {
     e.preventDefault();
 
     if (name !== "" && lastname !== "" && email !== "" && password !== "") {
-      signup({ name, lastname, email, password });
+      signUp({ name, lastname, email, password });
     }
   }
 
@@ -35,7 +37,7 @@ function SignUp({
 
   return (
     <div className="SignUp d-flex flex-column min-vh-100">
-      <HeaderContainer />
+      <Header />
 
       <main className="container d-flex flex-column flex-shrink-0 flex-grow-1">
         <div className="row justify-content-sm-center align-items-sm-center flex-grow-1">
@@ -108,14 +110,5 @@ function SignUp({
     </div>
   );
 }
-
-SignUp.propTypes = {
-  currentUserState: shape({
-    isAuthenticated: bool.isRequired,
-    signUpError: oneOfType([string, object]),
-    isSigningUp: bool.isRequired,
-  }).isRequired,
-  signup: func.isRequired,
-};
 
 export default SignUp;

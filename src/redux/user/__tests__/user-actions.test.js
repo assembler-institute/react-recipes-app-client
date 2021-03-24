@@ -1,7 +1,7 @@
 import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 
-import { login, signUp, signout } from "../user-actions";
+import { login, signUp, signOut } from "../user-actions";
 import UserTypes from "../user-types";
 
 import { getInitialReduxStoreUserState } from "../../../utils/test-utils";
@@ -91,7 +91,7 @@ describe("user thunk actions tests", () => {
     ];
 
     const store = mockStore(getInitialReduxStoreUserState());
-    await store.dispatch(signout());
+    await store.dispatch(signOut());
 
     expect(store.getActions()).toEqual(expectedActions);
   });

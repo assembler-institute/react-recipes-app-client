@@ -1,16 +1,20 @@
-import React from "react";
-import { shape, string, number } from "prop-types";
+import React, { useMemo } from "react";
 import cn from "classnames";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { string } from "prop-types";
 
 import "./RecipeCard.scss";
 import CardTime from "../CardTime";
 import Difficulty from "../Difficulty";
 import Serves from "../Serves";
 import ROUTES from "../../utils/routes";
+import { makeRecipeSelector } from "../../redux/recipes/recipes-selectors";
 
-function RecipeCard({
-  recipe: {
+function RecipeCard({ recipeID }) {
+  const recipeSelector = useMemo(makeRecipeSelector, []);
+  const recipe = useSelector((state) => recipeSelector(state, recipeID));
+  const {
     _id,
     name,
     difficulty,
@@ -18,8 +22,8 @@ function RecipeCard({
     serves,
     hoursToPrep,
     minutesToPrep,
-  } = {},
-}) {
+  } = recipe;
+
   const classes = cn("RecipeCard", "col");
 
   return (
@@ -46,15 +50,7 @@ function RecipeCard({
 }
 
 RecipeCard.propTypes = {
-  recipe: shape({
-    _id: string.isRequired,
-    name: string.isRequired,
-    difficulty: string.isRequired,
-    image: string.isRequired,
-    serves: number.isRequired,
-    hoursToPrep: number.isRequired,
-    minutesToPrep: number.isRequired,
-  }).isRequired,
+  recipeID: string.isRequired,
 };
 
 export default RecipeCard;

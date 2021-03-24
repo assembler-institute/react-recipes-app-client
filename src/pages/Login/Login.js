@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./Login.scss";
-import HeaderContainer from "../../redux/containers/components/HeaderContainer";
+import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -37,7 +37,7 @@ function Login() {
 
   return (
     <div className="Login d-flex flex-column min-vh-100">
-      <HeaderContainer />
+      <Header />
 
       <main className="container d-flex flex-column flex-shrink-0 flex-grow-1">
         <div className="row justify-content-sm-center align-items-sm-center flex-grow-1">

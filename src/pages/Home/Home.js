@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import "./Home.scss";
-import { useDispatch, useSelector } from "react-redux";
-import HeaderContainer from "../../redux/containers/components/HeaderContainer";
-import RecipeCardContainer from "../../redux/containers/components/RecipeCardContainer";
-
+import Header from "../../components/Header";
+import RecipeCard from "../../components/RecipeCard";
 import Footer from "../../components/Footer";
 import HomeHeader from "../../components/HomeHeader";
 import HomeEmptyContent from "../../components/HomeEmptyContent";
@@ -28,7 +27,7 @@ function Home() {
 
   return (
     <div className="Home d-flex flex-column min-vh-100">
-      <HeaderContainer />
+      <Header />
       <main className="d-flex flex-column flex-shrink-0 flex-grow-1">
         <HomeHeader />
 
@@ -53,7 +52,7 @@ function Home() {
                 {recipes.length > 0 ? (
                   <div className="row row-cols-1">
                     {recipes.map((recipe) => (
-                      <RecipeCardContainer key={recipe} recipeID={recipe} />
+                      <RecipeCard key={recipe} recipeID={recipe} />
                     ))}
                   </div>
                 ) : (

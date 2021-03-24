@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import "./Recipe.scss";
-import HeaderContainer from "../../redux/containers/components/HeaderContainer";
+import Header from "../../components/Header";
 import CardTime from "../../components/CardTime";
 import Difficulty from "../../components/Difficulty";
 import Serves from "../../components/Serves";
@@ -108,7 +108,7 @@ function Recipe() {
 
   return (
     <div className="Recipe d-flex flex-column min-vh-100">
-      <HeaderContainer />
+      <Header />
       <main className="d-flex flex-column flex-shrink-0 flex-grow-1">
         {recipeFetched ? (
           <>

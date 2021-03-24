@@ -190,12 +190,12 @@ describe("App behaviour", () => {
 
       it(`should be able to create a new user`, async () => {
         const { getByTestId } = renderWithReduxAndRouter(<App />, route);
-        userEvent.type(getByTestId("signup-form-email"), "test@test.com");
-        userEvent.type(getByTestId("signup-form-name"), "test");
-        userEvent.type(getByTestId("signup-form-lastname"), "recipes");
-        userEvent.type(getByTestId("signup-form-password"), "123supersecure");
+        userEvent.type(getByTestId("signUp-form-email"), "test@test.com");
+        userEvent.type(getByTestId("signUp-form-name"), "test");
+        userEvent.type(getByTestId("signUp-form-lastname"), "recipes");
+        userEvent.type(getByTestId("signUp-form-password"), "123supersecure");
 
-        const cta = getByTestId("signup-form-cta");
+        const cta = getByTestId("signUp-form-cta");
         userEvent.click(cta);
 
         await waitFor(() =>

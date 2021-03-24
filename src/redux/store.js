@@ -9,7 +9,7 @@ import storage from "redux-persist/lib/storage";
 import rootReducer from "./root-reducer";
 
 const persistConfig = {
-  key: "mern-seed-client",
+  key: "react-recipes-app-client",
   storage,
 };
 

@@ -5,7 +5,7 @@ import ROUTES from "./utils/routes";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import SignUpContainer from "./redux/containers/pages/SignUpContainer";
+import SignUp from "./pages/SignUp";
 import Recipe from "./pages/Recipe";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
         <Login />
       </Route>
       <Route path={ROUTES.SIGNUP}>
-        <SignUpContainer />
+        <SignUp />
       </Route>
       <Route path={ROUTES.RECIPE}>
         <Recipe />

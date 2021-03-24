@@ -32,7 +32,7 @@ export const signUpError = (message) => ({
   payload: message,
 });
 
-export const signupSuccess = ({ name, lastname, email, token }) => ({
+export const signUpSuccess = ({ name, lastname, email, token }) => ({
   type: UserTypes.SIGNUP_SUCCESS,
   payload: {
     name: name,
@@ -42,16 +42,16 @@ export const signupSuccess = ({ name, lastname, email, token }) => ({
   },
 });
 
-export const signoutRequest = () => ({
+export const signOutRequest = () => ({
   type: UserTypes.SIGNOUT_REQUEST,
 });
 
-export const signoutError = (message) => ({
+export const signOutError = (message) => ({
   type: UserTypes.SIGNOUT_REQUEST,
   payload: message,
 });
 
-export const signoutSuccess = () => ({
+export const signOutSuccess = () => ({
   type: UserTypes.SIGNOUT_SUCCESS,
 });
 
@@ -78,7 +78,7 @@ export function signUp({ name, lastname, email, password }) {
 
     if (res.ok) {
       dispatch(
-        signupSuccess({
+        signUpSuccess({
           name: resJson.data.user.name,
           lastname: resJson.data.user.lastname,
           email: resJson.data.user.email,
@@ -125,12 +125,12 @@ export function login({ email, password }) {
   };
 }
 
-export function signout() {
+export function signOut() {
   return async function logoutThunk(dispatch, getState) {
     const token = getState().user.currentUser.token;
 
     if (token) {
-      dispatch(signoutRequest());
+      dispatch(signOutRequest());
 
       const res = await fetch("http://localhost:4000/user/logout", {
         method: "POST",
@@ -138,13 +138,13 @@ export function signout() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-      }).catch((error) => dispatch(signoutError(error.message)));
+      }).catch((error) => dispatch(signOutError(error.message)));
 
       if (res.ok) {
-        dispatch(signoutSuccess());
+        dispatch(signOutSuccess());
       }
     } else {
-      dispatch(signoutError("Missing auth token"));
+      dispatch(signOutError("Missing auth token"));
     }
   };
 }

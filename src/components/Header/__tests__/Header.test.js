@@ -5,16 +5,16 @@ import { renderWithReduxAndRouter } from "../../../utils/test-utils";
 import Header from "..";
 
 describe("<Header />", () => {
-  const signOutCb = jest.fn();
-
   it("renders the unauthenticated user", () => {
     const { getByTestId, queryByTestId, getByText } = renderWithReduxAndRouter(
-      <Header
-        currentUserState={{
-          isAuthenticated: false,
-        }}
-        signOut={signOutCb}
-      />,
+      <Header />,
+      {
+        initialState: {
+          user: {
+            isAuthenticated: false,
+          },
+        },
+      },
     );
 
     const homeLink = getByText("Assembler School Recipes");
@@ -34,17 +34,15 @@ describe("<Header />", () => {
   it("renders the authenticated user", () => {
     const {
       getByTestId,
-      getByText,
       queryByText,
       queryByTestId,
-    } = renderWithReduxAndRouter(
-      <Header
-        currentUserState={{
+    } = renderWithReduxAndRouter(<Header />, {
+      initialState: {
+        user: {
           isAuthenticated: true,
-        }}
-        signOut={signOutCb}
-      />,
-    );
+        },
+      },
+    });
 
     const signOutButton = getByTestId("header-logout");
     const loginButton = queryByText("Login");
@@ -56,22 +54,5 @@ describe("<Header />", () => {
     expect(signUpButton).not.toBeInTheDocument();
     expect(queryByTestId("header-login")).not.toBeInTheDocument();
     expect(queryByTestId("header-register")).not.toBeInTheDocument();
-  });
-
-  it("calls the `signOut` cb when authenticated", () => {
-    const { getByTestId } = renderWithReduxAndRouter(
-      <Header
-        currentUserState={{
-          isAuthenticated: true,
-        }}
-        signOut={signOutCb}
-      />,
-    );
-
-    const signOutButton = getByTestId("header-logout");
-
-    userEvent.click(signOutButton);
-
-    expect(signOutCb).toHaveBeenCalledTimes(1);
   });
 });

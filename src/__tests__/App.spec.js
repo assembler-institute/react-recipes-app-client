@@ -178,7 +178,7 @@ describe("App behaviour", () => {
 
     describe("Application [Form]", () => {
       it(`should contain the right content`, () => {
-        const { getByText } = renderWithReduxAndRouter(<App />, route);
+        const { getByText } = renderWithReduxAndRouter(<App />, {}, route);
         expect(
           getByText("Nuevo usuario", { exact: false }),
         ).toBeInTheDocument();
@@ -189,7 +189,7 @@ describe("App behaviour", () => {
       });
 
       it(`should be able to create a new user`, async () => {
-        const { getByTestId } = renderWithReduxAndRouter(<App />, route);
+        const { getByTestId } = renderWithReduxAndRouter(<App />, {}, route);
         userEvent.type(getByTestId("signUp-form-email"), "test@test.com");
         userEvent.type(getByTestId("signUp-form-name"), "test");
         userEvent.type(getByTestId("signUp-form-lastname"), "recipes");
@@ -210,7 +210,7 @@ describe("App behaviour", () => {
 
     describe("Application [Form]", () => {
       it(`should contain the right content`, () => {
-        const { getByText } = renderWithReduxAndRouter(<App />, route);
+        const { getByText } = renderWithReduxAndRouter(<App />, {}, route);
 
         expect(getByText("Email", { exact: false })).toBeInTheDocument();
 
@@ -218,7 +218,7 @@ describe("App behaviour", () => {
       });
 
       it(`should be able to login with a user`, async () => {
-        const { getByTestId } = renderWithReduxAndRouter(<App />, route);
+        const { getByTestId } = renderWithReduxAndRouter(<App />, {}, route);
         userEvent.type(getByTestId("login-form-email"), "test@test.com");
         userEvent.type(getByTestId("login-form-password"), "123supersecure");
 

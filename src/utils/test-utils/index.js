@@ -7,18 +7,21 @@ import thunk from "redux-thunk";
 
 import rootReducer from "../../redux/root-reducer";
 
-// this is a handy function that I normally make available for all my tests
-// that deal with connected components.
-// you can provide initialState for the entire store that the component is rendered with
-export function renderWithReduxAndRouter(
-  component,
-  route = "/",
-  {
-    initialState,
-    store = createStore(rootReducer, applyMiddleware(thunk), initialState),
-  } = {},
-) {
+/**
+ *
+ * @param {*} component React Component
+ * @param {*} options { initialState, store }
+ * @param {*} route React Router Route = "/"
+ * @returns render()
+ */
+export function renderWithReduxAndRouter(component, options = {}, route = "/") {
+  const {
+    initialState = {},
+    store = createStore(rootReducer, initialState, applyMiddleware(thunk)),
+  } = options;
+
   window.history.pushState({}, "Test page", route);
+
   return {
     ...render(<Provider store={store}>{component}</Provider>, {
       wrapper: BrowserRouter,

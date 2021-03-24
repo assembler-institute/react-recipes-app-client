@@ -1,3 +1,1 @@
-import Difficulty from "./Difficulty";
-
-export default Difficulty;
+export { default } from "./Difficulty";

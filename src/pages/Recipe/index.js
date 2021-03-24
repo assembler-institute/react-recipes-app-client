@@ -1,3 +1,1 @@
-import Recipe from "./Recipe";
-
-export default Recipe;
+export { default } from "./Recipe";

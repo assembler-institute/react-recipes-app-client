@@ -1,3 +1,1 @@
-import CardTime from "./CardTime";
-
-export default CardTime;
+export { default } from "./CardTime";

@@ -1,3 +1,1 @@
-import HomeEmptyContent from "./HomeEmptyContent";
-
-export default HomeEmptyContent;
+export { default } from "./HomeEmptyContent";

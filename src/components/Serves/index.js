@@ -1,3 +1,1 @@
-import Serves from "./Serves";
-
-export default Serves;
+export { default } from "./Serves";

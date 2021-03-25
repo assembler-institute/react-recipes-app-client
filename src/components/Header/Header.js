@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import makePrefix from "../../utils/make-prefix";
 import ROUTES from "../../utils/routes";
@@ -9,6 +9,7 @@ import { signOut } from "../../redux/user/user-actions";
 import { currentUserStateSelector } from "../../redux/user/user-selectors";
 
 function Header() {
+  const dispatch = useDispatch();
   const currentUserState = useSelector(currentUserStateSelector);
   const { isAuthenticated } = currentUserState;
   const prefix = makePrefix("header");
@@ -30,7 +31,7 @@ function Header() {
             <Button
               additionalClasses="nav-item"
               variant="light"
-              onClick={() => signOut()}
+              onClick={() => dispatch(signOut())}
               data-testid={prefix("logout")}
             >
               Salir

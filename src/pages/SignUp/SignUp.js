@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import "./SignUp.scss";
 import Header from "../../components/Header";
@@ -20,6 +20,7 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const prefix = makePrefix("signUp-form");
 
+  const dispatch = useDispatch();
   const currentUserState = useSelector(currentUserStateSelector);
   const { isAuthenticated, signUpError, isSigningUp } = currentUserState;
 
@@ -27,7 +28,7 @@ function SignUp() {
     e.preventDefault();
 
     if (name !== "" && lastname !== "" && email !== "" && password !== "") {
-      signUp({ name, lastname, email, password });
+      dispatch(signUp({ name, lastname, email, password }));
     }
   }
 

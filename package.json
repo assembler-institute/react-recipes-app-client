@@ -1,7 +1,7 @@
 {
   "name": "react-recipes-app-client",
   "version": "1.0.0",
-  "description": "React Recipes App Client",
+  "description": "Client for the react-recipes-app",
   "private": true,
   "author": "Dani Lucaci <dani@assemblerschool.com>",
   "repository": {

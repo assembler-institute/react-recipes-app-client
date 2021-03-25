@@ -154,7 +154,7 @@ function Recipe() {
                         <div className="d-flex">
                           <div className="mr-4">
                             <Button
-                              disabled={recipeLoading}
+                              disabled={recipeLoading || !isAuthenticated}
                               onClick={handleDownVoteRecipe}
                               variant="dark"
                             >
@@ -163,7 +163,7 @@ function Recipe() {
                           </div>
                           <div>
                             <Button
-                              disabled={recipeLoading}
+                              disabled={recipeLoading || !isAuthenticated}
                               onClick={handleUpVoteRecipe}
                               variant="dark"
                             >

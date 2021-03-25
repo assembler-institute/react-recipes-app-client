@@ -23,6 +23,8 @@ import {
 import {
   addRecipeComment,
   fetchRecipe,
+  upVoteRecipe,
+  downVoteRecipe,
 } from "../../redux/recipes/recipes-actions";
 import { currentUserStateSelector } from "../../redux/user/user-selectors";
 
@@ -76,6 +78,7 @@ function Recipe() {
     author: { name: authorName, lastname: authorLastname } = {},
     ingredients,
     comments,
+    votes,
   } = recipe;
 
   const {
@@ -104,6 +107,14 @@ function Recipe() {
       setComment("");
       setShowForm(false);
     }
+  }
+
+  function handleUpVoteRecipe() {
+    dispatch(upVoteRecipe(recipeID));
+  }
+
+  function handleDownVoteRecipe() {
+    dispatch(downVoteRecipe(recipeID));
   }
 
   return (
@@ -140,6 +151,26 @@ function Recipe() {
 
                         <h1 className="h2">{name}</h1>
                         <p>{description}</p>
+                        <div className="d-flex">
+                          <div className="mr-4">
+                            <Button
+                              disabled={recipeLoading}
+                              onClick={handleDownVoteRecipe}
+                              variant="dark"
+                            >
+                              Down Vote {votes.downVotes}
+                            </Button>
+                          </div>
+                          <div>
+                            <Button
+                              disabled={recipeLoading}
+                              onClick={handleUpVoteRecipe}
+                              variant="dark"
+                            >
+                              Up Vote {votes.upVotes}
+                            </Button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

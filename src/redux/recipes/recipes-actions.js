@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+
 import * as RecipesTypes from "./recipes-types";
 
 import { normalizeRecipes } from "../../schema/recipes-schema";
@@ -50,6 +52,20 @@ export const addLocalRecipeComment = (recipeID, comment) => ({
   },
 });
 
+export const upVoteRecipeSuccess = (recipeID) => ({
+  type: RecipesTypes.UP_VOTE_RECIPE_SUCCESS,
+  payload: {
+    recipeID: recipeID,
+  },
+});
+
+export const downVoteRecipeSuccess = (recipeID) => ({
+  type: RecipesTypes.DOWN_VOTE_RECIPE_SUCCESS,
+  payload: {
+    recipeID: recipeID,
+  },
+});
+
 export function fetchRecipes() {
   return async function fetchRecipesThunk(dispatch) {
     dispatch(fetchRecipesRequest());
@@ -64,18 +80,20 @@ export function fetchRecipes() {
 
       const recipesJson = await res.json();
 
-      if (res.ok) {
-        const normalizedRecipes = normalizeRecipes(recipesJson.data);
-
-        dispatch(
-          fetchRecipesSuccess({
-            byID: normalizedRecipes.entities.recipes,
-            ids: normalizedRecipes.result,
-          }),
+      if (!res.ok) {
+        return dispatch(
+          fetchRecipesError(`Error: ${res.status} ${res.statusText}`),
         );
-      } else {
-        dispatch(fetchRecipesError(`Error: ${res.status} ${res.statusText}`));
       }
+
+      const normalizedRecipes = normalizeRecipes(recipesJson.data);
+
+      dispatch(
+        fetchRecipesSuccess({
+          byID: normalizedRecipes.entities.recipes,
+          ids: normalizedRecipes.result,
+        }),
+      );
     } catch (error) {
       dispatch(fetchRecipesError(error.message));
     }
@@ -86,21 +104,23 @@ export function fetchRecipe(recipeID) {
   return async function fetchRecipeThunk(dispatch) {
     dispatch(fetchRecipeRequest());
 
-    const res = await fetch(`http://localhost:4000/recipes/${recipeID}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).catch((error) => {
-      dispatch(fetchRecipeError(error.message));
-    });
+    try {
+      const res = await fetch(`http://localhost:4000/recipes/${recipeID}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    const recipeJson = await res.json();
+      const recipeJson = await res.json();
 
-    if (res.ok) {
+      if (!res.ok) {
+        return dispatch(fetchRecipeError(recipeJson.error));
+      }
+
       dispatch(fetchRecipeSuccess(recipeJson.data));
-    } else {
-      dispatch(fetchRecipeError(recipeJson.error));
+    } catch (error) {
+      dispatch(fetchRecipeError(error.message));
     }
   };
 }
@@ -109,7 +129,11 @@ export function addRecipeComment(recipeID, commentBody) {
   return async function addRecipeCommentThunk(dispatch, getState) {
     const token = getState().user.currentUser.token;
 
-    if (token) {
+    if (!token) {
+      return dispatch(recipeUpdatingError("Missing auth token"));
+    }
+
+    try {
       const res = await fetch(
         `http://localhost:4000/recipes/${recipeID}/comment`,
         {
@@ -122,34 +146,96 @@ export function addRecipeComment(recipeID, commentBody) {
             commentBody: commentBody,
           }),
         },
-      ).catch((error) => dispatch(recipeUpdatingError(error.message)));
+      );
 
-      const resJson = await res
-        .json()
-        .catch((error) => dispatch(recipeUpdatingError(error.message)));
+      const resJson = await res.json();
 
-      if (res.ok) {
-        try {
-          dispatch(
-            addLocalRecipeComment(recipeID, {
-              _id: resJson.data._id,
-              body: resJson.data.body,
-              recipe: resJson.data.recipe,
-              author: {
-                _id: resJson.data.author._id,
-                name: resJson.data.author.name,
-                lastname: resJson.data.author.lastname,
-              },
-            }),
-          );
-        } catch (error) {
-          dispatch(recipeUpdatingError(error.message));
-        }
-      } else {
-        dispatch(recipeUpdatingError(resJson.error));
+      if (!res.ok) {
+        return dispatch(recipeUpdatingError(resJson.error));
       }
-    } else {
-      dispatch(recipeUpdatingError("Missing auth token"));
+
+      dispatch(
+        addLocalRecipeComment(recipeID, {
+          _id: resJson.data._id,
+          body: resJson.data.body,
+          recipe: resJson.data.recipe,
+          author: {
+            _id: resJson.data.author._id,
+            name: resJson.data.author.name,
+            lastname: resJson.data.author.lastname,
+          },
+        }),
+      );
+    } catch (error) {
+      dispatch(recipeUpdatingError(error.message));
+    }
+  };
+}
+
+export function upVoteRecipe(recipeID) {
+  return async function upVoteRecipeThunk(dispatch, getState) {
+    const token = getState().user.currentUser.token;
+    dispatch(recipeUpdating());
+
+    if (!token) {
+      return dispatch(recipeUpdatingError("Missing auth token"));
+    }
+
+    try {
+      const res = await fetch(
+        `http://localhost:4000/recipes/${recipeID}/up-vote`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const resJson = await res.json();
+
+      if (!res.ok) {
+        return dispatch(recipeUpdatingError(resJson.error));
+      }
+
+      dispatch(upVoteRecipeSuccess(recipeID));
+    } catch (error) {
+      dispatch(recipeUpdatingError(error.message));
+    }
+  };
+}
+
+export function downVoteRecipe(recipeID) {
+  return async function upVoteRecipeThunk(dispatch, getState) {
+    const token = getState().user.currentUser.token;
+    dispatch(recipeUpdating());
+
+    if (!token) {
+      return dispatch(recipeUpdatingError("Missing auth token"));
+    }
+
+    try {
+      const res = await fetch(
+        `http://localhost:4000/recipes/${recipeID}/down-vote`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const resJson = await res.json();
+
+      if (!res.ok) {
+        return dispatch(recipeUpdatingError(resJson.error));
+      }
+
+      dispatch(downVoteRecipeSuccess(recipeID));
+    } catch (error) {
+      dispatch(recipeUpdatingError(error.message));
     }
   };
 }

@@ -9,6 +9,10 @@ const RecipesInitialState = {
   recipeFetched: false,
   recipeUpdating: false,
   recipeUpdatingError: null,
+  votes: {
+    upVotes: 0,
+    downVotes: 0,
+  },
   byID: {},
   ids: [],
 };
@@ -99,6 +103,42 @@ function RecipesReducer(state = RecipesInitialState, action) {
           [recipeID]: {
             ...state.byID[recipeID],
             comments: [newComment, ...state.byID[recipeID].comments],
+          },
+        },
+      };
+    }
+    case RecipesTypes.UP_VOTE_RECIPE_SUCCESS: {
+      const recipeID = action.payload.recipeID;
+      const recipe = state.byID[recipeID];
+
+      return {
+        ...state,
+        byID: {
+          ...state.byID,
+          [recipeID]: {
+            ...recipe,
+            votes: {
+              ...recipe.votes,
+              upVotes: recipe.votes.upVotes + 1,
+            },
+          },
+        },
+      };
+    }
+    case RecipesTypes.DOWN_VOTE_RECIPE_SUCCESS: {
+      const recipeID = action.payload.recipeID;
+      const recipe = state.byID[recipeID];
+
+      return {
+        ...state,
+        byID: {
+          ...state.byID,
+          [recipeID]: {
+            ...recipe,
+            votes: {
+              ...recipe.votes,
+              downVotes: recipe.votes.downVotes + 1,
+            },
           },
         },
       };

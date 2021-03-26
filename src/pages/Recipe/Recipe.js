@@ -13,6 +13,8 @@ import Button from "../../components/Button";
 import Label from "../../components/Label";
 import TextArea from "../../components/TextArea";
 import HomeEmptyContent from "../../components/HomeEmptyContent";
+import RecipeCommentsCount from "../../components/RecipeCommentsCount";
+import RecipeComments from "../../components/RecipeComments";
 import makePrefix from "../../utils/make-prefix";
 
 import {
@@ -27,32 +29,6 @@ import {
   downVoteRecipe,
 } from "../../redux/recipes/recipes-actions";
 import { currentUserStateSelector } from "../../redux/user/user-selectors";
-
-function CommentsCount({ commentsArr = [] }) {
-  if (Array.isArray(commentsArr) && commentsArr.length === 0) {
-    return "0 comentarios";
-  }
-  if (Array.isArray(commentsArr) && commentsArr.length === 1) {
-    return "1 comentario";
-  }
-  if (Array.isArray(commentsArr) && commentsArr.length > 1) {
-    return `${commentsArr.length} comentarios`;
-  }
-
-  return "0 comentarios";
-}
-
-function Comments({ comments = [] }) {
-  return comments.map((comment) => (
-    <div key={comment._id} className="Recipe__Comment">
-      <p className="Recipe__Comment__Author">
-        {comment && comment.author && comment.author.name}{" "}
-        {comment && comment.author && comment.author.lastname}
-      </p>
-      <p>{comment.body}</p>
-    </div>
-  ));
-}
 
 function Recipe() {
   const { recipeID } = useParams();
@@ -145,7 +121,7 @@ function Recipe() {
                       <div className="col Recipe__Content">
                         <p className="text-muted text-uppercase Recipe__Subhead">
                           {Array.isArray(comments) && (
-                            <CommentsCount commentsArr={comments} />
+                            <RecipeCommentsCount commentsArr={comments} />
                           )}
                         </p>
 
@@ -273,7 +249,7 @@ function Recipe() {
                   <div>
                     <hr />
                     {Array.isArray(comments) && comments.length > 0 ? (
-                      <Comments comments={comments} />
+                      <RecipeComments comments={comments} />
                     ) : (
                       <p>No hay comentarios disponibles</p>
                     )}

@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
 import "./Login.scss";
 import Header from "../../components/Header";
@@ -8,16 +6,15 @@ import Footer from "../../components/Footer";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import Label from "../../components/Label";
-import ROUTES from "../../utils/routes";
+// import ROUTES from "../../utils/routes";
 import makePrefix from "../../utils/make-prefix";
-import { currentUserStateSelector } from "../../redux/user/user-selectors";
-import { login } from "../../redux/user/user-actions";
 
 function Login() {
-  const { isAuthenticated, loginError, isLoggingIn } = useSelector(
-    currentUserStateSelector,
-  );
-  const dispatch = useDispatch();
+  const { isAuthenticated, loginError, isLoggingIn } = {
+    isAuthenticated: false,
+    loginError: null,
+    isLoggingIn: false,
+  };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,13 +23,11 @@ function Login() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (email !== "" && password !== "") {
-      dispatch(login({ email, password }));
-    }
+    // dispatch(login({ email, password }));
   }
 
   if (isAuthenticated) {
-    return <Redirect to={ROUTES.HOME} />;
+    return "redirect to the ROUTES.HOME path...";
   }
 
   return (

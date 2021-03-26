@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 
 import "./Home.scss";
 import Header from "../../components/Header";
@@ -7,23 +6,17 @@ import RecipeCard from "../../components/RecipeCard";
 import Footer from "../../components/Footer";
 import HomeHeader from "../../components/HomeHeader";
 import HomeEmptyContent from "../../components/HomeEmptyContent";
-import {
-  recipesSelector,
-  recipesStateSelector,
-} from "../../redux/recipes/recipes-selectors";
-import { fetchRecipes } from "../../redux/recipes/recipes-actions";
 
 function Home() {
-  const recipes = useSelector(recipesSelector);
-  const { recipesLoading, recipesLoadingError } = useSelector(
-    recipesStateSelector,
-  );
+  const recipes = [];
+  const { recipesLoading, recipesLoadingError } = {
+    recipesLoading: false,
+    recipesLoadingError: null,
+  };
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchRecipes());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchRecipes());
+  // }, [dispatch]);
 
   return (
     <div className="Home d-flex flex-column min-vh-100">

@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useMemo } from "react";
-
-import { useDispatch, useSelector } from "react-redux";
+import React, { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import "./Recipe.scss";
 import Header from "../../components/Header";
@@ -22,17 +21,10 @@ import {
   recipesStateSelector,
 } from "../../redux/recipes/recipes-selectors";
 
-import {
-  addRecipeComment,
-  fetchRecipe,
-  upVoteRecipe,
-  downVoteRecipe,
-} from "../../redux/recipes/recipes-actions";
 import { currentUserStateSelector } from "../../redux/user/user-selectors";
 
 function Recipe() {
   const { recipeID } = useParams();
-  const dispatch = useDispatch();
   const [comment, setComment] = useState("");
   const [showForm, setShowForm] = useState(false);
 
@@ -67,11 +59,11 @@ function Recipe() {
 
   const { isAuthenticated } = currentUserState;
 
-  useEffect(() => {
-    if (_id) {
-      dispatch(fetchRecipe(_id));
-    }
-  }, [dispatch, _id]);
+  // useEffect(() => {
+  //   if (_id) {
+  //     dispatch the fetchRecipe(_id) action...;
+  //   }
+  // }, [dispatch, _id]);
 
   const prefix = makePrefix("recipe");
 
@@ -79,18 +71,18 @@ function Recipe() {
     e.preventDefault();
 
     if (comment !== "") {
-      dispatch(addRecipeComment(_id, comment));
+      // dispatch the addRecipeComment(_id, comment) action;
       setComment("");
       setShowForm(false);
     }
   }
 
   function handleUpVoteRecipe() {
-    dispatch(upVoteRecipe(recipeID));
+    // dispatch the upVoteRecipe(recipeID) action...;
   }
 
   function handleDownVoteRecipe() {
-    dispatch(downVoteRecipe(recipeID));
+    // dispatch the downVoteRecipe(recipeID) action...;
   }
 
   return (

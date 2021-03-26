@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import "./SignUp.scss";
 import Header from "../../components/Header";
@@ -8,10 +7,8 @@ import Footer from "../../components/Footer";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import Label from "../../components/Label";
-import ROUTES from "../../utils/routes";
 import makePrefix from "../../utils/make-prefix";
 import { currentUserStateSelector } from "../../redux/user/user-selectors";
-import { signUp } from "../../redux/user/user-actions";
 
 function SignUp() {
   const [name, setName] = useState("");
@@ -20,7 +17,6 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const prefix = makePrefix("signUp-form");
 
-  const dispatch = useDispatch();
   const currentUserState = useSelector(currentUserStateSelector);
   const { isAuthenticated, signUpError, isSigningUp } = currentUserState;
 
@@ -28,12 +24,12 @@ function SignUp() {
     e.preventDefault();
 
     if (name !== "" && lastname !== "" && email !== "" && password !== "") {
-      dispatch(signUp({ name, lastname, email, password }));
+      // dispatch the signUp({ name, lastname, email, password }) action...;
     }
   }
 
   if (isAuthenticated) {
-    return <Redirect to={ROUTES.HOME} />;
+    return "redirect to the ROUTES.HOME path...";
   }
 
   return (

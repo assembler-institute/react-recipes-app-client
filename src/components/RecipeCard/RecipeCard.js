@@ -1,7 +1,6 @@
-import React, { useMemo } from "react";
+import React from "react";
 import cn from "classnames";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { string } from "prop-types";
 
 import "./RecipeCard.scss";
@@ -9,11 +8,18 @@ import CardTime from "../CardTime";
 import Difficulty from "../Difficulty";
 import Serves from "../Serves";
 import ROUTES from "../../utils/routes";
-import { makeRecipeSelector } from "../../redux/recipes/recipes-selectors";
 
 function RecipeCard({ recipeID }) {
-  const recipeSelector = useMemo(makeRecipeSelector, []);
-  const recipe = useSelector((state) => recipeSelector(state, recipeID));
+  const recipe = {
+    _id: "_id",
+    name: "name",
+    difficulty: "difficulty",
+    image: "image",
+    serves: 4,
+    hoursToPrep: 4,
+    minutesToPrep: 4,
+  };
+
   const {
     _id,
     name,

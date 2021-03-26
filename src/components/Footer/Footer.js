@@ -6,7 +6,7 @@ function Footer() {
       <div className="row">
         <div className="col">
           <p className="text-center text-light">
-            Assembler School MERN Starter {new Date().getFullYear()}
+            React Recipes App &copy; {new Date().getFullYear()}
           </p>
         </div>
       </div>
